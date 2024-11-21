@@ -24,7 +24,6 @@ export async function POST(request: NextRequest) {
       `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
       {
         headers: {
-          'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
           'Accept': 'application/vnd.github.v3+json'
         }
       }
