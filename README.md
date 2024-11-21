@@ -78,24 +78,6 @@ const model = new ChatGoogleGenerativeAI({
 });
 ```
 
-### 3. Error Handling
-
-The API implements comprehensive error handling:
-
-```typescript
-// Error Response Format
-{
-  error: string;
-  status?: number;
-}
-
-// Common Status Codes
-400 - Bad Request (Invalid URL or parameters)
-401 - Unauthorized (Invalid API keys)
-404 - Not Found (Repository or file not found)
-500 - Internal Server Error
-```
-
 ## Setup and Configuration
 
 1. Clone the repository:
