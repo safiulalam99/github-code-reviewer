@@ -11,10 +11,11 @@ A Next.js application that fetches code from GitHub repositories and provides AI
 - Clean API structure with modular design
 
 ### Tech Stack
-- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
 - **AI Integration**: LangChain with Google's Gemini Pro
-- **API Integration**: GitHub API
-- **Styling**: shadcn/ui components
+- **API Integration**: GitHub REST API v3
+- **UI Components**: shadcn/ui
+- **Styling**: Tailwind CSS with CSS Variables
 
 ## Key Implementation Details
 
@@ -27,9 +28,35 @@ Two methods to fetch code:
 POST /api/github/url
 body: { url: string }
 
+Response: {
+  content: string;
+  metadata: {
+    owner: string;
+    repo: string;
+    path: string;
+    sha: string;
+  }
+}
+```
+
+```typescript
 // Repository-based fetching
 POST /api/github/repo
-body: { owner: string, repo: string, sha: string }
+body: {
+  owner: string;
+  repo: string;
+  sha: string;
+}
+
+Response: {
+  content: string;
+  metadata: {
+    owner: string;
+    repo: string;
+    path: string;
+    sha: string;
+  }
+}
 ```
 
 ### 2. LangChain Integration
@@ -51,9 +78,31 @@ const model = new ChatGoogleGenerativeAI({
 });
 ```
 
+### 3. Error Handling
+
+The API implements comprehensive error handling:
+
+```typescript
+// Error Response Format
+{
+  error: string;
+  status?: number;
+}
+
+// Common Status Codes
+400 - Bad Request (Invalid URL or parameters)
+401 - Unauthorized (Invalid API keys)
+404 - Not Found (Repository or file not found)
+500 - Internal Server Error
+```
+
 ## Setup and Configuration
 
-1. Clone the repository
+1. Clone the repository:
+```bash
+git clone https://github.com/safiulalam99/github-code-reviewer.git
+cd github-code-reviewer
+```
 
 2. Install dependencies:
 ```bash
@@ -62,7 +111,6 @@ npm install
 
 3. Set up environment variables:
 ```env
-GITHUB_TOKEN=your_github_token
 GOOGLE_API_KEY=your_gemini_api_key
 ```
 
@@ -79,6 +127,17 @@ POST /api/github/url
 {
   "url": "https://github.com/owner/repo/blob/main/path/to/file"
 }
+
+// Success Response
+{
+  "content": string,
+  "metadata": {
+    "owner": string,
+    "repo": string,
+    "path": string,
+    "sha": string
+  }
+}
 ```
 
 ### 2. GitHub Repo Endpoint
@@ -89,6 +148,17 @@ POST /api/github/repo
   "repo": "repository",
   "sha": "file_sha"
 }
+
+// Success Response
+{
+  "content": string,
+  "metadata": {
+    "owner": string,
+    "repo": string,
+    "path": string,
+    "sha": string
+  }
+}
 ```
 
 ### 3. Code Review Endpoint
@@ -97,5 +167,22 @@ POST /api/review
 {
   "code": "code_content"
 }
+
+// Success Response
+{
+  "review": {
+    "score": number,
+    "explanation": string,
+    "strengths": string[],
+    "improvements": string[]
+  }
+}
 ```
+
+## Development
+
+- Built with TypeScript for type safety
+- Uses ESLint for code quality
+- Implements shadcn/ui for consistent UI components
+- Supports dark/light theme with system preference detection
 
