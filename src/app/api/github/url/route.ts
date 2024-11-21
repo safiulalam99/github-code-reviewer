@@ -30,18 +30,18 @@ export async function POST(request: NextRequest) {
     );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch file from GitHub');
+      throw new Error('Failed to fetch from GitHub');
     }
 
     const data = await response.json();
+    const content = Buffer.from(data.content, 'base64').toString();
+
     return Response.json({
-      content: Buffer.from(data.content, 'base64').toString()
+      content,
+      metadata: { owner, repo, path, sha: data.sha }
     });
 
   } catch (error: any) {
-    return Response.json(
-      { error: error.message },
-      { status: 400 }
-    );
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }
