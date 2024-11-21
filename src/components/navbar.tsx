@@ -7,15 +7,9 @@ export function Navbar() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold">My App</span>
+            <span className="font-bold">GitHub Code Review</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link href="/about" className="transition-colors hover:text-foreground/80">
-              About
-            </Link>
-            <Link href="/docs" className="transition-colors hover:text-foreground/80">
-              Docs
-            </Link>
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
