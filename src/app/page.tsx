@@ -6,21 +6,26 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { UrlForm } from '@/components/forms/url-form';
 import { RepoForm } from '@/components/forms/repo-form';
-import { CodeViewer } from '@/components/code-viewer';
+
+export interface CodeReviewResult {
+  code: string;
+  review: string;
+}
+
 
 export default function Home() {
   const [isUrlMode, setIsUrlMode] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [content, setContent] = useState<string | null>(null);
+  const [result, setResult] = useState<CodeReviewResult | null>(null);
 
-  const handleSuccess = (content: string) => {
+  const handleSuccess = (data: string | CodeReviewResult) => {
     setError(null);
-    setContent(content);
+    setResult(typeof data === 'string' ? { code: data, review: '' } : data);
   };
 
   const handleError = (error: string) => {
     setError(error);
-    setContent(null);
+    setResult(null);
   };
 
   return (
@@ -50,7 +55,23 @@ export default function Home() {
             </div>
           )}
 
-          <CodeViewer content={content} />
+          {result && (
+            <div className="mt-6 space-y-6">
+              <div>
+                <h3 className="font-semibold mb-2">Code Review:</h3>
+                <div className="bg-muted p-4 rounded-lg whitespace-pre-wrap">
+                  {result.review}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-2">Code:</h3>
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                  <code>{result.code}</code>
+                </pre>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </main>
