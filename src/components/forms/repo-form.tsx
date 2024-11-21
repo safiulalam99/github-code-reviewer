@@ -48,8 +48,8 @@ export function RepoForm({ onSuccess, onError }: RepoFormProps) {
 
       onSuccess({ code: content, review });
       
-    } catch (err: any) {
-      onError(err.message);
+    } catch (err: unknown) {
+      onError((err as Error).message);
     } finally {
       setLoading(false);
     }

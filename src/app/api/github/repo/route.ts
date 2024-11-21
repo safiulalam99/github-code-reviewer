@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       content: Buffer.from(data.content, 'base64').toString()
     });
 
-  } catch (error: any) {
-    return Response.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return Response.json({ error: (error as Error).message }, { status: 500 });
   }
 }

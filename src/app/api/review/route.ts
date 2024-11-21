@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     return Response.json({ review: review.content });
 
-  } catch (error: any) {
-    return Response.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return Response.json({ error: (error as Error).message }, { status: 500 });
   }
 }
