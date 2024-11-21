@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const { owner, repo, sha } = await request.json();
-
+    
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/git/blobs/${sha}`,
       {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch file from GitHub');
+      throw new Error('Failed to fetch from GitHub');
     }
 
     const data = await response.json();
@@ -23,9 +23,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: any) {
-    return Response.json(
-      { error: error.message },
-      { status: 400 }
-    );
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }
